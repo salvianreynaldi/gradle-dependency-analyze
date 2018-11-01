@@ -94,4 +94,3 @@ tasks.withType(PublishToMavenRepository) {
   it.dependsOn check
   it.dependsOn javaVersionCheck
 }
-

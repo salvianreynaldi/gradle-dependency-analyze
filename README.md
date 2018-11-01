@@ -46,10 +46,8 @@ This task depends on the `analyzeClassesDependencies` and `analyzeTestClassesDep
 This plugin adds four configurations which may be used to define dependencies which should be handled in a special way. These configurations have no impact on the build outside of this plugin.
 * `permitUnusedDeclared`
 * `permitTestUnusedDeclared`
-* `permitUsedUndeclared`
-* `permitTestUsedUndeclared`
 
-Adding dependencies to `permitUnusedDeclared` or `permitTestUnusedDeclared` causes the dependency analyzer to ignore cases where the dependencies are declared but not used. Adding dependencies to `permitUsedUndeclared` or `permitTestUsedUndeclared` causes the dependency analyzer to ignore cases where the dependencies used but not declared. 
+Adding dependencies to `permitUnusedDeclared` or `permitTestUnusedDeclared` causes the dependency analyzer to ignore cases where the dependencies are declared but not used.
 
 ## Examples
 Using these configurations to allow exceptions to the rules is as simple as adding a dependency to your project. The snippet below will provide a compile-time dependency on the JSP API, but the plugin will not complain if it is not used.
@@ -92,15 +90,15 @@ task analyzeCustomClassesDependencies(type: AnalyzeDependenciesTask, dependsOn: 
   // Set to true to print a warning rather than fail the build if the dependency analysis fails
   justWarn = false
 
-  // List of configurations which the analyzed output is required to use 
+  // List of configurations which the analyzed output is required to use
   require = [ configurations.customCompile, configuration.customCompileOnly ]
 
   // List of configurations which the analyzed output may use but is not required to
   allowedToUse = [ configurations.compile, configurations.provided ]
-  
+
   // List of configurations which the analyzed output is not required to use, even if dependencies are present in the 'require' list above
   allowedToDeclare = [ configurations.permitCustomUnusedDeclared ]
-  
+
   // Location of class output directories to analyze
   classesDirs = sourceSets.custom.output.classesDirs
 }
@@ -140,8 +138,6 @@ For more practical examples, see the [plugin source](https://github.com/wfhartfo
 Version 1.3 of this plugin introduces only minor functional changes, but adds support for Java version 9, 10, and 11, while dropping support for Java versions 6 and 7.
 
 The dependency analyzer has been upgraded to version `1.10`, this new version adds detection of inlined dependencies, which can cause some false positives (the lack of this detection used to cause false negatives). In order to assist in working around these false positives, two new configurations have been added to the plugin:
-* `permitUsedUndeclared`
-* `permitTestUsedUndeclared`
 
 These configurations are described above.
 

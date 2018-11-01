@@ -44,18 +44,19 @@ class AnalyzeDependenciesTask extends DefaultTask {
     ['usedUndeclaredArtifacts', 'unusedDeclaredArtifacts'].each {section ->
       def violations = analysis."$section"
       if (violations) {
-        buffer.append("$section: \n")
+        buffer.append("  $section: \n")
         violations*.moduleVersion*.id.each {
-          buffer.append(" - $it.group:$it.name:$it.version\n")
+          buffer.append("   - $it.group:$it.name:$it.version\n")
         }
       }
     }
     outputFile.parentFile.mkdirs()
     outputFile.text = buffer.toString()
     if (buffer) {
-      def message = "Dependency analysis found issues.\n$buffer"
+      def dependencyLine=1
+      def message = "[dependency-analyze] ${project.buildFile.canonicalPath}:${dependencyLine}: ${name} failed!\n${buffer}"
       if (justWarn) {
-        logger.warn message
+        logger.error message
       }
       else {
         throw new DependencyAnalysisException(message)
